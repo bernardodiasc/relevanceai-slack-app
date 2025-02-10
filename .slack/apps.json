@@ -1,0 +1,11 @@
+{
+  "apps": {
+    "E08BPBURMH8": {
+      "app_id": "A08BR48D2J2",
+      "enterprise_id": "E08BPBURMH8",
+      "team_domain": "relevanceaislackapp",
+      "team_id": "E08BPBURMH8"
+    }
+  },
+  "default": "relevanceaislackapp"
+}
