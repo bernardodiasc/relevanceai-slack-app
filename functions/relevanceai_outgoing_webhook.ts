@@ -8,11 +8,11 @@ import { DefineFunction, Schema, SlackFunction } from "deno-slack-sdk/mod.ts";
  * be used independently or as steps in workflows.
  * https://api.slack.com/automation/functions/custom
  */
-export const OutgoingWebhookFunctionDefinition = DefineFunction({
-  callback_id: "outgoing_webhook",
+export const RelevanceAIOutgoingWebhookFunctionDefinition = DefineFunction({
+  callback_id: "relevanceai_outgoing_webhook",
   title: "RelevanceAI Outgoing Webhook",
   description: "Add RelevanceAI Outgoing Webhook step to the Slack Workflow",
-  source_file: "functions/outgoing_webhook.ts",
+  source_file: "functions/relevanceai_outgoing_webhook.ts",
   input_parameters: {
     properties: {
       webhook: {
@@ -47,7 +47,7 @@ export const OutgoingWebhookFunctionDefinition = DefineFunction({
  * https://api.slack.com/automation/functions/custom
  */
 export default SlackFunction(
-  OutgoingWebhookFunctionDefinition,
+  RelevanceAIOutgoingWebhookFunctionDefinition,
   async ({ inputs }) => {
     const { webhook, message } = inputs;
     const config = {
