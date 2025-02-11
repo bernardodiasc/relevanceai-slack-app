@@ -8,8 +8,8 @@ import { OutgoingWebhookFunctionDefinition } from "./functions/outgoing_webhook.
  * https://api.slack.com/automation/manifest
  */
 export default Manifest({
-  name: "RelevanceAI-Slack-app",
-  description: "A blank template for building Slack apps with Deno",
+  name: "RelevanceAI-Workflow-Step",
+  description: "Add RelevanceAI Outgoing Webhook step to the Slack Workflow",
   icon: "assets/default_new_app_icon.png",
   functions: [OutgoingWebhookFunctionDefinition],
   workflows: [],

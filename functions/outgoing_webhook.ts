@@ -10,8 +10,8 @@ import { DefineFunction, Schema, SlackFunction } from "deno-slack-sdk/mod.ts";
  */
 export const OutgoingWebhookFunctionDefinition = DefineFunction({
   callback_id: "outgoing_webhook",
-  title: "Outgoing Webhook",
-  description: "The Outgoing Webhook function",
+  title: "RelevanceAI Outgoing Webhook",
+  description: "Add RelevanceAI Outgoing Webhook step to the Slack Workflow",
   source_file: "functions/outgoing_webhook.ts",
   input_parameters: {
     properties: {
@@ -33,7 +33,7 @@ export const OutgoingWebhookFunctionDefinition = DefineFunction({
     properties: {
       response: {
         type: Schema.types.string,
-        description: "The webhook response",
+        description: "The RelevanceAI agent response",
       },
     },
     required: ["response"],
