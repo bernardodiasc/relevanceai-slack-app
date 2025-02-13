@@ -66,7 +66,13 @@ export default SlackFunction(
         throw new Error(`HTTP error! status: ${fetcher.status}`);
       }
       const response = await fetcher.text();
-      const { message } = JSON.parse(response);
+      let message;
+      try {
+        const { parsedResponse } = JSON.parse(response);
+        message = parsedResponse.message;
+      } catch {
+        message = response;
+      }
       return { outputs: { response: message } };
     } catch (error) {
       console.error("Error sending webhook:", error);
