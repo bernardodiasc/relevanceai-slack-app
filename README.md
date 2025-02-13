@@ -1,6 +1,24 @@
-# Blank Template
+# Slack Workflow Builder – Outgoing Webhook Step
 
-This is a blank template used to build out automations using the Slack CLI.
+This Slack App adds an "Outgoing Webhook" (trigger external request) step to Slack's Workflow Builder. Since Slack does not currently provide a built-in way to trigger external services directly from Workflow Builder, this app allows users to send data to external APIs, automation platforms (like Make.com or Zapier), or custom services.
+
+This solution is particularly useful for:
+
+- Automating workflows that require interaction with external platforms.
+- Sending structured data from Slack to external tools.
+- Integrating with AI services, databases, or automation platforms.
+
+Allowed outgoing domains:
+
+- Make - https://www.make.com/
+  - Webhook URL: `https://hook.us2.make.com/`
+- Zapier - https://zapier.com/
+  - Webhook URL: `https://hooks.zapier.com/`
+- RelevanceAI - https://relevanceai.com/
+  - Webhook URL: `https://api-f1db6c.stack.tryrelevance.com/`
+
+
+# Developer Guide
 
 **Guide Outline**:
 
