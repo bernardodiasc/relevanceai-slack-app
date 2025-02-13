@@ -9,7 +9,8 @@ import { OutgoingWebhookFunctionDefinition } from "./functions/outgoing_webhook.
  */
 export default Manifest({
   name: "Outgoing Webhook Workflow Step",
-  description: "Add an Outgoing Webhook step to the Slack Workflow",
+  description:
+    "Add an Outgoing Webhook step to the Slack Workflow. Available to trigger Make, Zapier and RelevanceAI webhooks.",
   icon: "assets/default_new_app_icon.png",
   functions: [OutgoingWebhookFunctionDefinition],
   workflows: [],
