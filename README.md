@@ -17,6 +17,7 @@ Allowed outgoing domains:
 - RelevanceAI - https://relevanceai.com/
   - Webhook URL: `https://api-f1db6c.stack.tryrelevance.com/`
 
+Read more about how this project can be used https://coda.io/d/_dn-kPOR28xH/Send-Data-from-Slack-Workflows-to-Other-Platforms_suHpQPHb
 
 # Developer Guide
 
