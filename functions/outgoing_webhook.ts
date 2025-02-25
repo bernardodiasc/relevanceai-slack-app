@@ -23,6 +23,16 @@ export const OutgoingWebhookFunctionDefinition = DefineFunction({
         type: Schema.slack.types.rich_text,
         description: "The content payload to be sent with the webhook",
       },
+      threadId: {
+        type: Schema.slack.types.message_context,
+        description:
+          "Used to group messages into the same conversation (e.g., for chatbot interactions)",
+      },
+      uniqueId: {
+        type: Schema.types.string,
+        description:
+          "Used to prevent the same event from being processed multiple times (avoiding duplicates)",
+      },
     },
     required: [
       "webhook",
@@ -49,7 +59,7 @@ export const OutgoingWebhookFunctionDefinition = DefineFunction({
 export default SlackFunction(
   OutgoingWebhookFunctionDefinition,
   async ({ inputs }) => {
-    const { webhook, message } = inputs;
+    const { webhook, message, threadId, uniqueId } = inputs;
     const config = {
       method: "POST",
       headers: new Headers({
@@ -58,25 +68,31 @@ export default SlackFunction(
       }),
       body: JSON.stringify({
         message: richTextBlockToMrkdwn(message[0]),
+        threadId,
+        uniqueId,
       }),
     };
     try {
       const fetcher = await fetch(webhook, config);
       if (!fetcher.ok) {
-        throw new Error(`HTTP error! status: ${fetcher.status}`);
+        console.error("HTTP error! status:", fetcher.status);
+        // throw new Error(`HTTP error! status: ${fetcher.status}`);
+        return;
       }
+
       const response = await fetcher.text();
       let message;
       try {
         const { parsedResponse } = JSON.parse(response);
-        message = parsedResponse.message;
+        message = parsedResponse?.message || parsedResponse;
       } catch {
         message = response;
       }
       return { outputs: { response: message } };
     } catch (error) {
       console.error("Error sending webhook:", error);
-      throw error;
+      // throw error;
+      return;
     }
   },
 );
