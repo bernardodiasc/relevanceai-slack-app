@@ -50,6 +50,56 @@ export const OutgoingWebhookFunctionDefinition = DefineFunction({
   },
 });
 
+export const OutgoingWebhookFunction = async (
+  { webhook, message, threadId, uniqueId }: {
+    webhook: string;
+    message: unknown;
+    threadId?: { channel_id: string; message_ts: string };
+    uniqueId?: string;
+  },
+) => {
+  const messageMarkdown = Array.isArray(message)
+    ? richTextBlockToMrkdwn(message[0])
+    : (message || "");
+  const config = {
+    method: "POST",
+    headers: new Headers({
+      "content-type": "application/json",
+      "body-type": "raw",
+    }),
+    body: JSON.stringify({
+      message: messageMarkdown,
+      threadId,
+      uniqueId,
+    }),
+  };
+
+  try {
+    const fetcher = await fetch(webhook, config);
+    if (!fetcher.ok) {
+      console.error("HTTP error! status:", fetcher.status);
+      // throw new Error(`HTTP error! status: ${fetcher.status}`);
+      return;
+    }
+
+    const response = await fetcher.text();
+
+    let message;
+    try {
+      const parsedResponse = JSON.parse(response);
+      message = parsedResponse?.message || parsedResponse;
+    } catch {
+      message = response;
+    }
+
+    return { outputs: { response: message } };
+  } catch (error) {
+    console.error("Error sending webhook:", error);
+    // throw error;
+    return { outputs: { response: error } };
+  }
+};
+
 /**
  * SlackFunction takes in two arguments: the CustomFunction
  * definition (see above), as well as a function that contains
@@ -58,43 +108,8 @@ export const OutgoingWebhookFunctionDefinition = DefineFunction({
  */
 export default SlackFunction(
   OutgoingWebhookFunctionDefinition,
-  async ({ inputs }) => {
-    const { webhook, message, threadId, uniqueId } = inputs;
-    const config = {
-      method: "POST",
-      headers: new Headers({
-        "content-type": "application/json",
-        "body-type": "raw",
-      }),
-      body: JSON.stringify({
-        message: richTextBlockToMrkdwn(message[0]),
-        threadId,
-        uniqueId,
-      }),
-    };
-    try {
-      const fetcher = await fetch(webhook, config);
-      if (!fetcher.ok) {
-        console.error("HTTP error! status:", fetcher.status);
-        // throw new Error(`HTTP error! status: ${fetcher.status}`);
-        return;
-      }
-
-      const response = await fetcher.text();
-      let message;
-      try {
-        const { parsedResponse } = JSON.parse(response);
-        message = parsedResponse?.message || parsedResponse;
-      } catch {
-        message = response;
-      }
-      return { outputs: { response: message } };
-    } catch (error) {
-      console.error("Error sending webhook:", error);
-      // throw error;
-      return;
-    }
-  },
+  // @ts-ignore: ???
+  ({ inputs }) => OutgoingWebhookFunction(inputs),
 );
 
 /**
